@@ -20,7 +20,7 @@ density_plot_for_pol2 <- function(Pol2_dat, outfile, background_value){
           loadfonts(device = "pdf")
 
           #--- rename the coumns
-          colnames(Pol2_dat) <- c("Gene","RNA Pol II Signal", "Input")
+          colnames(Pol2_dat) <- c("Gene","RNAP Signal", "Input")
 
           #--- reshape data for plotting
           ppm <- Pol2_dat %>% gather(key=variable, value=value,-Gene)
@@ -44,7 +44,7 @@ density_plot_for_pol2 <- function(Pol2_dat, outfile, background_value){
           print(gg)
 
           #--- save file
-          ggsave(filename = paste(outfile,"_Pol2_distribution.pdf",sep=""), path="./",width=5, height=5, dpi=300)
+          ggsave(filename = paste(outfile,"_Pol2_distribution.png",sep=""), path="./",width=5, height=5, dpi=300)
 }
 
 
