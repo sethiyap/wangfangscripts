@@ -48,7 +48,7 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
                     row_order = order(mylist$X2, decreasing=TRUE)
           }
 
-          tss <-  promoters(genes,upstream=0, downstream=1)
+
 
           ## prepare signal data
           bw_files <- list.files(bw_files_dir, pattern = "*_normalized.*", recursive = T, full.names = T)
@@ -137,7 +137,7 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
 
           print("plotting....")
           pdf(file=paste(output, length(genes), "hm.pdf", sep="_"), width=6, height=10)
-          draw(ehm_list, heatmap_legend_side = "right", gap = unit(2.1, "mm"))
+          draw(ehm_list, heatmap_legend_side = "right", gap = unit(1.5, "mm"))
           dev.off()
 
 }
