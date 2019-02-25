@@ -16,12 +16,16 @@ dat_scatter <- read_delim(pipe("pbpaste"), delim="\t", col_names = TRUE)
 #' @param plot_title title for the plot
 #' @param color color for the points to be plotted
 #' @import tidyverse
+#' @impot  extrafont
+
 #' @return
 #' @author pooja sethiya
 #' @export
 #'
 #' @examples
 plot_correlation_by_scatter <- function(dat_scatter, output_name, plot_title="Sample", color="black"){
+          loadfonts(device = "pdf")
+
 
           colname=colnames(data)
           corr_eqn <- function(x,y, digits = 2) {
@@ -34,16 +38,16 @@ plot_correlation_by_scatter <- function(dat_scatter, output_name, plot_title="Sa
                               facet_wrap(~Class)+
                               labs(x="Set1", y="Set2", title=plot_title)+
                               theme_bw()+
-                              theme(axis.text.x= element_text(face="bold", color="black",size=10),
-                                    axis.text.y = element_text(face="bold", color="black",size=10),
-                                    axis.title.y=element_text(face="bold", color="black",size=10),
-                                    axis.title.x=element_text(face="bold", color="black",size=10),
-                                    legend.title=element_text(face="bold", color="black",size=10),
-                                    strip.text = element_text(face="bold", color="black",size=10),
+                              theme(axis.text.x= element_text(color="black",size=12,family="Arial"),
+                                    axis.text.y = element_text(color="black",size=12,family="Arial"),
+                                    axis.title.y=element_text(color="black",size=12,family="Arial"),
+                                    axis.title.x=element_text(color="black",size=12,family="Arial"),
+                                    legend.title=element_text(color="black",size=12,family="Arial"),
+                                    strip.text = element_text(color="black",size=12,family="Arial"),
                                     legend.key.size = unit(1,"line"),
                                     plot.title = element_text(hjust = 0.5),
                                     strip.background = element_rect(colour = "black", fill = "white"),
-                                    legend.text=element_text(face="bold", color="black",size=14))+
+                                    legend.text=element_text(color="black",size=12,family="Arial"))+
                               guides(fill = guide_legend(title = ""), color=guide_legend(title=""))
                     print(gg)
                     ggsave(filename = paste(output_name,"_correlationByScatter.pdf"), path="./",unit="cm", dpi=300)
@@ -51,20 +55,20 @@ plot_correlation_by_scatter <- function(dat_scatter, output_name, plot_title="Sa
           }
 
           else{
-                    labels = data.frame(x = 1, y = 8, label = corr_eqn(log2(dat_scatter$Set1), log2(dat_scatter$Set2)))
-                    gg <- ggplot(dat_scatter,aes(log2(Set1), log2(Set2)))+geom_point(alpha=0.5, color=color)+
+                    labels = data.frame(x = 1, y = 8, label = corr_eqn(log2(dat_scatter$Set1+0.01), log2(dat_scatter$Set2+0.01)))
+                    gg <- ggplot(dat_scatter,aes(log2(Pol2), log2(mRNA_rep1)))+geom_point(alpha=0.5, color=color)+
                               theme_bw()+labs(x="Set1", y="Set2", title=plot_title)+
                               theme(axis.text.x= element_text(face="bold", color="black",size=10),
                                     #axis.ticks = element_blank(),
-                                    axis.text.y = element_text(face="bold", color="black",size=10),
-                                    axis.title.y=element_text(face="bold", color="black",size=10),
-                                    axis.title.x=element_text(face="bold", color="black",size=10),
-                                    legend.title=element_text(face="bold", color="black",size=10),
-                                    strip.text = element_text(face="bold", color="black",size=10),
+                                    axis.text.y = element_text(color="black",size=12,family="Arial"),
+                                    axis.title.y=element_text(color="black",size=12,family="Arial"),
+                                    axis.title.x=element_text(color="black",size=12,family="Arial"),
+                                    legend.title=element_text(color="black",size=12,family="Arial"),
+                                    strip.text = element_text(color="black",size=12,family="Arial"),
                                     legend.key.size = unit(1.5,"line"),
                                     plot.title = element_text(hjust = 0.5),
                                     strip.background = element_rect(colour = "black", fill = "white"),
-                                    legend.text=element_text(face="bold", color="black",size=14))+
+                                    legend.text=element_text(color="black",size=12,family="Arial"))+
                               guides(fill = guide_legend(title = ""), color=guide_legend(title=""))+
                               geom_text(data = labels, aes(x = x, y = y,label = label), parse = TRUE,size = 6)
                     print(gg)
