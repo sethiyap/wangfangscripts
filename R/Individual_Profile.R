@@ -1,4 +1,5 @@
 
+gff_file <- "/Users/Pooja/Documents/Data-Analysis/Others/Reference_Annotation/An/A_nidulans_FGSC_A4_version_s10-m04-r07_features.gff"
 
 mylist <- read_delim(pipe("pbpaste"), delim="\t", col_names=FALSE)
 
