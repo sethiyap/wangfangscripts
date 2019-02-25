@@ -49,7 +49,7 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
           }
 
 
-
+          tss = promoters(genes, upstream = 0, downstream = 1)
           ## prepare signal data
           bw_files <- list.files(bw_files_dir, pattern = "*_normalized.*", recursive = T, full.names = T)
 
