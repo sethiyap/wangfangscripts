@@ -3,7 +3,7 @@
 library(tidyverse)
 
 dat <- tibble::tribble(
-             ~Gene, ~RNA.Pol-II.Signal, ~mRNA.Expression,
+             ~Gene, ~RNA Pol-II Signal, ~mRNA_Expression,
             "atfA",            56.3248,      1051.890539,
               "wA",            36.6445,      826.2410956,
           "nce102",           216.3155,      819.7359104,
@@ -22,6 +22,10 @@ dat <- tibble::tribble(
 
 
 back2back_barplot <- function(dat, output){
+
+          library(extrafont)
+          loadfonts(device = "pdf")
+
           dat_m <- dat %>%
                     gather(Category, value, -Gene) %>%
                     mutate(value=log2(value), value=if_else(Category=="RNA Pol-II Signal", -value, value)) %>%
