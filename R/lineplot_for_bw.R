@@ -59,10 +59,10 @@ lineplot_for_bw <- function(gff_file, mylist,bw_file, output, tss="TRUE"){
 
           gg <- ggplot(summarised_mat,aes(column_name,median, group=quantile,color =rev(quantile)))+
                     geom_line(lwd=1.1)+
-                    scale_color_gradient(high="#fd8d3c", low="#b10026")+
+                   # scale_color_gradient(high="#fd8d3c", low="#b10026")+
                     #scale_color_gradient(low="#7a0177", high="#fcc5c0")+
                     #scale_color_gradient(high="#b2e2e2", low="#005824")+
-                    scale_color_gradient(high="#e5f5e0", low="#005a32")+
+                    #scale_color_gradient(high="#e5f5e0", low="#005a32")+
                     scale_x_discrete(breaks=breaks,labels=labels,"")+
                     theme_bw()+
                     geom_vline(xintercept = inter, size=0.8,color="red",linetype = "dashed")+
@@ -79,7 +79,7 @@ lineplot_for_bw <- function(gff_file, mylist,bw_file, output, tss="TRUE"){
                               legend.key.size = unit(1,"line"),
                               legend.box.spacing=unit(0.5,"mm"),
                               legend.text=element_text(color="black",size=12,family="Arial")) +
-                    ylab("median (TFIIB binding)")+
+                    ylab("median (TBP binding)")+
                     guides(color=guide_legend(title=""))
 
           print(gg)
