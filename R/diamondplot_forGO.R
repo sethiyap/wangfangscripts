@@ -11,7 +11,6 @@ plot_go_in_diamond <- function(data,output_name){
 
           print(head(data))
 
-
           data_melt <- data %>%
                     mutate(Percent.Enrichment=100*(data$Significant/data$Annotated))
 
@@ -28,10 +27,10 @@ if("Class" %in% colnames(data)){
                     scale_y_discrete(position="left")+
                     theme_bw()+
                     scale_x_discrete(position="top")+
-                    theme(axis.text.x= element_text(color="black",size=12,family="Arial"),
-                          axis.text.y = element_text(color="black",size=12,family="Arial"),
-                          axis.title.x=element_text(color="black",size=12,family="Arial"),
-                          legend.title=element_text(color="black",size=12,family="Arial"),
+                    theme(axis.text.x= element_text(color="black",size=10,family="Arial"),
+                          axis.text.y = element_text(color="black",size=10,family="Arial"),
+                          axis.title.x=element_text(color="black",size=10,family="Arial"),
+                          legend.title=element_text(color="black",size=10,family="Arial"),
                           legend.key.size = unit(0.5,"line"),
                           panel.spacing = unit(1, "lines"),
                           legend.text=element_text(color="black",size=12,family="Arial"))+
@@ -54,19 +53,19 @@ if("Class" %in% colnames(data)){
                               scale_y_discrete(position="right")+
                               theme_bw()+
                               scale_x_discrete(position="top")+
-                              theme(axis.text.x= element_text(color="black",size=12,family="Arial"),
-                                    axis.text.y = element_text(color="black",size=12,family="Arial"),
-                                    axis.title.x=element_text(color="black",size=12,family="Arial"),
-                                    legend.title=element_text(color="black",size=12,family="Arial"),
+                              theme(axis.text.x= element_text(color="black",size=10,family="Arial"),
+                                    axis.text.y = element_text(color="black",size=10,family="Arial"),
+                                    axis.title.x=element_text(color="black",size=10,family="Arial"),
+                                    legend.title=element_text(color="black",size=10,family="Arial"),
                                     legend.key.size = unit(0.5,"line"),
                                     panel.spacing = unit(1, "lines"),
-                                    legend.text=element_text(color="black",size=12,family="Arial"))+
+                                    legend.text=element_text(color="black",size=10,family="Arial"))+
                               scale_color_manual(values ="black")+
                               guides(fill = guide_legend(title="",override.aes = list(size=8)),
                                      size=guide_legend(title="percentage of \ngene over bgd",override.aes = list(size=c(2,4,6,8))),
                                      alpha=guide_legend(override.aes=list(size=5)))
                     print(gg)
-                    ggsave(paste(output_name,"GoByColorPvalue.pdf",sep=""), height = 10, width=9)
+                    ggsave(paste(output_name,"GoByColorPvalue.pdf",sep=""), height = 7, width=9)
 
           }
 }

@@ -12,12 +12,13 @@
 #' @import ggplot2
 #' @examples
 #'
-heatmap_in_ggplot <-
-function(dat, output_name){
+heatmap_in_ggplot <- function(dat, output_name){
 
           #--- Load libraries
           library(ggplot2)
           library(tidyverse)
+          library(extrafont)
+          loadfonts(device = "pdf")
 
           #--- Data format
           # Gene	Spore	Hypha	Input	Category
@@ -41,18 +42,19 @@ function(dat, output_name){
                               facet_wrap(~Category, nrow=length(unique(dat_plot$Category)),scales = "free_y", strip.position="left") +
                               scale_fill_gradient(low = "#ffeda0",high = "#f03b20", limits = c(0,max(fpkm))) +theme_bw()+
                               scale_y_discrete(position="right")+
-                              theme(axis.text.x= element_text(face="bold", colour="black", size=10,angle=0,vjust=0.8),
-                                    axis.text.y = element_text(face="bold", color="black",size=10),
+                             scale_x_discrete(position="top")+
+                              theme(axis.text.x= element_text(color="black",size=12,family="Arial"),
+                                    axis.text.y = element_text(color="black",size=12,family="Arial"),
                                     axis.title.y=element_blank(),
                                     axis.title.x=element_blank(),
                                     legend.position = "top",
                                     #strip.background = element_rect( fill="white"),
-                                    strip.text=element_text(face="bold", color="black",size=11),
-                                    legend.title=element_text(face="bold", color="black",size=10),
+                                    strip.text=element_text(color="black",size=12,family="Arial"),
+                                    legend.title=element_text(color="black",size=12,family="Arial"),
                                     legend.key.size = unit(1,"line"),
                                     legend.box.spacing=unit(0.5,"mm"),
-                                    legend.text=element_text(face="bold", color="black",size=10))+
-                              guides(fill = guide_colourbar(title.position="top", title.hjust = 0.5,title ="RNA Pol-II Signal"))
+                                    legend.text=element_text(color="black",size=12,family="Arial"))+
+                              guides(fill = guide_colourbar(title.position="top", title.hjust = 0.5,title ="RNAP Signal"))
 
                    print(gg)
                    ggsave(filename = paste(output_name,"_heatmap_in_ggplot.pdf"), device = "pdf", path="./", width = 8, height =19,unit="cm", dpi=300)
@@ -62,27 +64,29 @@ function(dat, output_name){
           else{
                     message("no category provided! plotting data...")
                     dat_plot <-   dat %>% gather(key="Sample", value="fpkm",-Gene) %>%
-                                        mutate(Sample=as_factor(Sample)) %>% group_by(Sample) %>% arrange((fpkm),.by_group=TRUE) # Order high to low
+                                        mutate(Sample=as_factor(Sample))  %>% group_by(Sample) %>%
+                                        arrange(desc(fpkm),.by_group=TRUE) # Order high to low
 
-                    dat_plot$Gene <- factor(dat_plot$Gene, levels=unique(dat_plot$Gene))
+                    dat_plot$Gene <- factor(dat_plot$Gene, levels=unique(rev(dat_plot$Gene)))
                     gg=ggplot(data = dat_plot, aes(x = Sample, y = Gene)) +
                               geom_tile(aes(fill = (fpkm)), colour = "white") +
                               scale_fill_gradient(low = "#ffeda0",high = "#f03b20",limits = c(0,max(dat_plot$fpkm))) +theme_bw()+
                               scale_y_discrete(position="right")+
-                              theme(axis.text.x= element_text(face="bold", colour="black", size=10,angle=0,vjust=0.8),
-                                    axis.text.y = element_text(face="bold", color="black",size=10),
+                              scale_x_discrete(position="top")+
+                              theme(axis.text.x= element_text(color="black",size=12,family="Arial",angle=0,vjust=0.8),
+                                    axis.text.y = element_text(color="black",size=12,family="Arial"),
                                     axis.title.y=element_blank(),
                                     axis.title.x=element_blank(),
                                     legend.position = "right",
-                                    legend.title=element_text(face="bold", color="black",size=10),
+                                    legend.title=element_text(color="black",size=12,family="Arial"),
                                     legend.key.size = unit(1,"line"),
                                     legend.box.spacing=unit(0.5,"mm"),
                                     legend.text=element_text(face="bold", color="black",size=10))+
-                              guides(fill = guide_colourbar(title.position="top", title.hjust = 0.5,title ="RNA Pol-II Signal"))
+                              guides(fill = guide_colourbar(title.position="top", title.hjust = 0.5,title ="RNAP Signal"))
 
                      print(gg)
 
-                     ggsave(filename = paste(output_name,"_heatmap_in_ggplot.pdf"), path="./",width=ncol(dat), height = nrow(dat) dpi=300)
+                     ggsave(filename = paste(output_name,"_heatmap_in_ggplot.pdf",sep=""), path="./" ,dpi=300)
 
           }
 

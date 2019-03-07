@@ -37,7 +37,7 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
           if(mylist== "NULL"){
                     genes <- genes
 
-                    row_order = order(enriched_score(mat), decreasing = TRUE)
+                    #row_order = order(enriched_score(mat), decreasing = TRUE)
           }
 
           else{
@@ -57,7 +57,7 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
           #eg: ./H2A.Z_by_Htz1_NH4_GTTGTCCCA_CW466_525_normalized.bw
           # print only H2A.Z_by_Htz1_NH4
 
-          names(bw_files) <- gsub(pattern = "_[[:upper:]]{6,}_.*_normalized.bw",replacement = "", bw_files)
+          names(bw_files) <- gsub(pattern = "_[[:upper:]]{6,}_.*_normalized.b*",replacement = "", bw_files)
           names(bw_files) <- gsub(pattern = "./",replacement = "", names(bw_files))
 
           #names(bw_files) <- c("hepA_HA_20hr","hepA_HA_48hr","hypha_h3k9me3_wt","hypha_h3k9me3_hepA_del", "spore_h3k9me3_wt","spore_h3k9me3_hepA_del" )
@@ -83,7 +83,8 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
                     })) %>%
                     dplyr::mutate(norm_matrix = purrr::map(bw, function(ii) {
                               nn <- EnrichedHeatmap::normalizeToMatrix(ii, tss, value_column = "score",background = 0,
-                                                                       smooth = TRUE,extend = c(1000))
+                                                                       extend = c(1000),
+                                                                       smooth = TRUE)
                               nn[nn<0]=0
                               return(nn)
                     }))

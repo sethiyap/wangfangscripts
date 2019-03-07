@@ -46,7 +46,7 @@ xx <- bw_files %>%
 eml_1 <- EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[1]]+0.01),
                                 name = xx$names[[1]],
                                 column_title = xx$names[[1]],
-                                row_order = order(mylist$X2, decreasing = TRUE)
+                                row_order = order(mylist$X2, decreasing = TRUE),
                          cluster_rows = FALSE,
                          show_row_names = FALSE,
                          axis_name_rot = 90,
@@ -94,7 +94,7 @@ eml_3 <- EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[3]]+0.01),
                                                    axis_name = c("-1kb","TSS", "+1kb"),
                                                    axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
                                          col = colorRamp2(breaks = c(1,2,3,4,5),
-                                                          colors = c("white","#e5f5e0","#c7e9c0","#238b45","#005a32")),
+                                                          colors = c("white","#d0d1e6","#a6bddb","#0570b0","#034e7b")),
                                          top_annotation = HeatmapAnnotation(lines = anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
                                                                                                   ylim = c(2.8,5.5),height = unit(2, "cm")
                                                                                              ))
@@ -104,7 +104,7 @@ eml_list <- eml_1+eml_2+eml_3
 
 
 print("plotting....")
-pdf(file=paste("FIG2_B", length(genes_1), "hm.pdf", sep="_"), width=9, height=10)
-draw(eml_list, heatmap_legend_side = "top", gap = unit(2, "mm"))
+pdf(file=paste("FIG2_B3", length(genes_1), "hm.pdf", sep="_"), width=3, height=10)
+draw(eml_3, heatmap_legend_side = "top", gap = unit(2, "mm"))
 dev.off()
 

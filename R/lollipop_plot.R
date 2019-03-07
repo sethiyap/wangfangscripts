@@ -17,7 +17,7 @@ lollipop_plot <- function(dat, output_name, title){
 
           # plot
          gg <-  ggplot(dat_plot,aes(x = Gene, y = fpkm, color=Sample)) +
-                    geom_line(aes(group=Gene), color="skyblue", size=0.8) +
+                    geom_line(aes(group=Gene), color="grey",alpha=0.1) +
                     geom_point(size=4, alpha=0.8) +
                     scale_color_manual(values=c("#1b7837","#762a83"))+
                     labs(y="RNAP ChIP-seq Signal", title=title)+
