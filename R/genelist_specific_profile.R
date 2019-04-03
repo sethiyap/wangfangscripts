@@ -6,7 +6,7 @@ list_2 <- read_delim(pipe("pbpaste"), delim="\t", col_names =FALSE)
 setwd(".") #make the folder with bw file as working directory
 bw_test <- "H3K4me3_CGGACGTGG_CL_veA_wt_spore_ChIPmix22_normalized.bw" # specify the name of bw files
 bw_control <- "H3_AGAACACC_an_spore_CL1019Mix_normalized.bw"
-#---
+#--- for fig2D
 
 #' genelist_specific_profiles
 #'
@@ -76,7 +76,7 @@ genelist_specific_profiles <- function(gff_file, bw_test,bw_control,list_1,list_
                              return(nn)
                    }))
 
-
+          #--- normalise by h3 ----
          dd2 <- dd  %>% mutate(norm_mat = map2(mat,mat_h3, function(x,y){ mm = (x+0.01) / (y+0.01)
                              return(mm)
                    } ))
@@ -116,22 +116,27 @@ genelist_specific_profiles <- function(gff_file, bw_test,bw_control,list_1,list_
           ehm_list <- get_enrichment_heatmap_list(x = dd2$norm_mat,names = dd2$name,
                                                   titles = dd2$name,
                                                   cluster_rows = FALSE,
-                                                  show_row_names = FALSE,
+                                                  row_order=NULL,
+                                                  show_row_names = TRUE,
                                                   axis_name_rot = 90,
                                                   heatmap_legend_param = list(color_bar = "continuous",legend_direction="horizontal", legend_width = unit(3, "cm"),
                                                                               title_position = "topcenter",labels_gp = gpar(fonsize=12, fontfamily="Arial")),
                                                   axis_name = c("-1kb","TSS","TES", "+1kb"),
                                                   axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
                                                   top_annotation = HeatmapAnnotation(lines = anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
-                                                                                                          # ylim = c(0.8,2),height = unit(2, "cm")
-                                                                                                         # ylim = c(0.7,1.8),height = unit(2, "cm")
-                                                                                                          ylim = c(0.1,5.8),height = unit(2, "cm")
+                                                                                                           ylim = c(0.8,4),height = unit(2, "cm")
+                                                                                                          #ylim = c(0.7,1.8),height = unit(2, "cm")
+                                                                                                         # ylim = c(0.1,5.8),height = unit(2, "cm")
                                                                                                            )
                                                                                      )
           )
 
+          # row_order_list = row_order(ehm_list)
+          # list_1$H3K4me3 <- list_1[row_order_list,]$X1
+
+
           print("plotting....")
-          pdf(file=paste(output, length(genes_1), "hm.pdf", sep="_"), width=6, height=10)
+          pdf(file=paste(output, length(genes_1), "hm.pdf", sep="_"), width=6, height=60)
           draw(ehm_list, heatmap_legend_side = "top", gap = unit(2, "mm"))
           dev.off()
 

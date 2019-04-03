@@ -38,6 +38,7 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
                     genes <- genes
 
                     #row_order = order(enriched_score(mat), decreasing = TRUE)
+
           }
 
           else{
@@ -108,7 +109,7 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
                                                             mat = x[[i]],
                                                             name = ifelse(length(names) >= i, names[i], "NA"),
                                                             use_raster = TRUE,
-                                                            right_annotation = ha,
+                                                            #right_annotation = ha,
                                                             column_title = ifelse(length(titles) >= i, titles[i], "NA"),
                                                             show_heatmap_legend = ifelse(length(names) >= i, TRUE, FALSE), ...
                                                   ) ## legend will be shown only if the name is given for a heatmap.
@@ -125,14 +126,17 @@ multiple_bdg_profileplot <- function(gff_file, bw_files_dir, output, mylist, cut
 
           ehm_list <- get_enrichment_heatmap_list(x = xx$norm_matrix,names = xx$names,titles = xx$names,
                                                   cluster_rows = FALSE,
-                                                  row_order = row_order,
+                                                  #row_order =row_order,
                                                   show_row_names = FALSE,
                                                   axis_name_rot = 90,
                                                   heatmap_legend_param = list(color_bar = "continuous",legend_direction="vertical"),
                                                   axis_name = c("-1kb","TSS", "+1kb"),
                                                   axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
                                                   col = colorRamp2(breaks = seq(0, 60, by = 10),
-                                                                   colors = c("#ffffb2","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#b10026")),
+                                                                   colors = c("#ffffb2","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#b10026")
+                                                                    #colors=c("#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#005a32")
+                                                                    # colors=c("#fff7f3","#fde0dd","#fcc5c0","#ae017e","#49006a")
+                                                  ),
                                                   top_annotation = HeatmapAnnotation(lines = anno_enriched(axis_param =list( facing="inside",gp=gpar(fonsize=12, fontfamily="Arial"))))
                                                  )
 

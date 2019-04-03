@@ -19,11 +19,12 @@ if("Class" %in% colnames(data)){
           data_melt$Category <- factor(data$Category, levels=(unique(data$Category)))
           data_melt$Class<- factor(data$Class, levels=(unique(data$Class)))
 
-          gg= ggplot(data_melt , aes(y=Term, x=Class,ordered=TRUE, fill=Category))+xlab("")+ylab("")+
-                    geom_point(aes(size=Percent.Enrichment,alpha=-log10(Pvalue)),shape=23)+
+          gg= ggplot(data_melt , aes(y=Term, x=Class,ordered=TRUE))+xlab("")+ylab("")+
+                    geom_point(aes(size=Percent.Enrichment),color="black",shape=23, stroke=0.8)+
+                    geom_point(aes(size=Percent.Enrichment,alpha=-log10(Pvalue), fill=Category),shape=23)+
                     scale_size(range = c(1,15))+
-                    #scale_fill_manual(values=c("#c51b7d","#01665e"))+
-                    scale_fill_manual(values=c("#e41a1c","#1b9e77","#f0027f"))+
+                    scale_fill_manual(values=c("#c51b7d","#01665e"))+
+                    #scale_fill_manual(values=c("#e41a1c","#1b9e77","#f0027f"))+
                     scale_y_discrete(position="left")+
                     theme_bw()+
                     scale_x_discrete(position="top")+
@@ -39,15 +40,17 @@ if("Class" %in% colnames(data)){
                            size=guide_legend(title="percentage of \ngene over bgd",override.aes = list(size=c(2,4,6,8))),
                            alpha=guide_legend(override.aes=list(size=5)))
           print(gg)
-          ggsave(paste(output_name,"GoByColorPvalue.pdf",sep=""), height = 5.5, width=8)
+         ggsave(paste(output_name,"GoByColorPvalue.pdf",sep=""), height = 5.5, width=8)
+          #ggsave(paste(output_name,"GoByColorPvalue.pdf",sep=""), height = 25, width=15)
 
           }
           else{
                     data_melt$Term <- factor(data$Term, levels=rev(unique(data$Term)))
                     data_melt$Category <- factor(data$Category, levels=(unique(data$Category)))
 
-                    gg= ggplot(data_melt , aes(y=Term, x=Category,ordered=TRUE, fill=Category))+xlab("")+ylab("")+
-                              geom_point(aes(size=Percent.Enrichment,alpha=-log10(Pvalue)),shape=23)+
+                    gg= ggplot(data_melt , aes(y=Term, x=Category,ordered=TRUE))+xlab("")+ylab("")+
+                              geom_point(aes(size=Percent.Enrichment),color="black",shape=23, stroke=0.8)+
+                              geom_point(aes(size=Percent.Enrichment,alpha=-log10(Pvalue), fill=Category),shape=23)+
                               scale_size(range = c(1,15))+
                               scale_fill_manual(values=c("#e41a1c","#1b9e77","#f0027f"))+
                               scale_y_discrete(position="right")+

@@ -65,9 +65,9 @@ heatmap_in_ggplot <- function(dat, output_name){
                     message("no category provided! plotting data...")
                     dat_plot <-   dat %>% gather(key="Sample", value="fpkm",-Gene) %>%
                                         mutate(Sample=as_factor(Sample))  %>% group_by(Sample) %>%
-                                        arrange(desc(fpkm),.by_group=TRUE) # Order high to low
+                                        arrange((fpkm),.by_group=TRUE) %>% # Order high to low
+                                        ungroup() %>% mutate(Gene=as_factor(Gene))
 
-                    dat_plot$Gene <- factor(dat_plot$Gene, levels=unique(rev(dat_plot$Gene)))
                     gg=ggplot(data = dat_plot, aes(x = Sample, y = Gene)) +
                               geom_tile(aes(fill = (fpkm)), colour = "white") +
                               scale_fill_gradient(low = "#ffeda0",high = "#f03b20",limits = c(0,max(dat_plot$fpkm))) +theme_bw()+
