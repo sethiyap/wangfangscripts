@@ -28,7 +28,7 @@ density_plot_for_pol2 <- function(Pol2_dat, outfile, background_value, title){
           #--- plot ggplot
           gg = ggplot(ppm,aes(value+0.01,fill=variable))+geom_density(alpha=0.5)+
                     xlab("RNAP ChIP-seq signal")+
-                    ylab("No. of genes")+
+                    ylab("Density of genes")+
                     theme_bw()+
                     scale_fill_manual(values=c("#ffeda0","#f03b20"))+
                     ggtitle(label = title)+
@@ -48,9 +48,12 @@ density_plot_for_pol2 <- function(Pol2_dat, outfile, background_value, title){
           print(gg)
 
           #--- save file
-          ggsave(filename = paste(outfile,"_Pol2_distribution.png",sep=""), path="./",width=5, height=5, dpi=300)
+          ggsave(filename = paste(outfile,"_Pol2_distribution.pdf",sep=""), path="./",width=5, height=5, dpi=300)
 }
 
+
+
+# density_plot_for_pol2(Pol2_dat,"Tm_Pol2",9.1,"Tm")
 
 
 
