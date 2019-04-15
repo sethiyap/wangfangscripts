@@ -84,8 +84,8 @@ plot_cnet <- function(dat, output_name, org,GO_term_no){
           enr <- enricher(gene = dat,
                           pvalueCutoff = 1,
                           pAdjustMethod = "none",
-                          minGSSize = 10,
-                          maxGSSize = 500,
+                          minGSSize = 1,
+                          maxGSSize = 50000,
                           qvalueCutoff = 1,
                           TERM2GENE = term_to_gene,
                           TERM2NAME = term_to_name)
@@ -96,8 +96,21 @@ plot_cnet <- function(dat, output_name, org,GO_term_no){
 
           print(emapplot(enr))
 
-          cc <- cnetplot(enr, showCategory =GO_term_no, colorEdge = TRUE,node_label = FALSE)
-          print(cc)
+          cnetplot_out <- cnetplot(enr ,
+                                   node_label = FALSE,
+                                   colorEdge = TRUE ,
+                                   showCategory = GO_term_no,
+                                   layout = "auto")
+
+          cnetplot_out <- cnetplot_out %+%
+                    ggrepel::geom_text_repel(data = subset(cnetplot_out$data,color != "#B3B3B3") ,
+                                             aes(x = x, y = y , label = name) ,
+                                             size = 4) +
+                    guides(edge_colour = "none")
+
+
+          print(cnetplot_out)
+
 
           ggsave(filename = paste(output_name,"_clusterGO.pdf",sep=""), path="./", width = 18, height =10, dpi=300)
 
