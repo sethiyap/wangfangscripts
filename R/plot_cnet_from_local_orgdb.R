@@ -5,6 +5,10 @@ dir="/Users/Pooja/Documents/Data-Analysis/PhD/Scripts-commands/orgDb/org.Scerevi
 install.packages(pkgs = dir ,repos = NULL, type = "source")
 #---
 
+# --- run as
+plot_cnet_from_local_orgdb(dat, no_GO_Terms = 20,output_name="xxx")
+
+# --- function
 
 dat <- clipr::read_clip()
 
