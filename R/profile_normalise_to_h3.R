@@ -2,11 +2,13 @@
 
 gff_file <- "/Users/Pooja/Documents/Data-Analysis/Others/Reference_Annotation/An/A_nidulans_FGSC_A4_version_s10-m04-r07_features.gff"
 
+mylist <- read_delim(pipe("pbpaste"), delim="\t", col_names =FALSE)
 bw_test <- "H3K9Ac_3d_spore_AGGTCAGT_mix33_fang_normalized.bw" # specify the name of bw files
 bw_H3 <- "H3_AGAACACC_an_spore_CL1019Mix_normalized.bw"
 
 
-profile_normalise_to_h3 <- function(gff_file,bw_test,bw_H3){
+profile_normalise_to_h3 <- function(gff_file,bw_test,bw_H3, mylist=0){
+
           #--- packages
           library(EnrichedHeatmap)
           library(rtracklayer)
@@ -21,6 +23,15 @@ profile_normalise_to_h3 <- function(gff_file,bw_test,bw_H3){
           gff <- makeTxDbFromGFF(gff_file, metadata = T)
           genes <- genes(gff)
 
+          #--- for list of genes
+          if(is.null(mylist)==TRUE){
+                    genes <- genes
+          }
+
+          else{
+                    message("your list is uploading...")
+                    genes <-  subset(genes, genes$gene_id %in% mylist$X1)
+          }
 
           genes <- list(genes)
 
@@ -110,7 +121,7 @@ profile_normalise_to_h3 <- function(gff_file,bw_test,bw_H3){
           )
 
           print("plotting....")
-          pdf(file=paste(names(genes), length(genes[[1]]), "hm.pdf", sep="_"), width=4, height=7)
+          pdf(file=paste(names(genes), length(genes[[1]]), "normalised_toH3_hm.pdf", sep="_"), width=4, height=7)
           draw(ehm_list, heatmap_legend_side = "top", gap = unit(2, "mm"))
           dev.off()
 
