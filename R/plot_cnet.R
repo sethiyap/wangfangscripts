@@ -81,6 +81,10 @@ plot_cnet <- function(dat, output_name, org,GO_term_no){
           term_to_name <- my_species_orgdb_cols %>% filter(ONTOLOGY == "Biological Process") %>%
                     dplyr::select(c("GO_ID", "GO_TERM_NAME")) %>% drop_na() %>% unique()
 
+
+          term_to_gene <- term_to_gene %>% filter(GO_ID!="GO:0008150") # remove  biological process GO
+          term_to_name <- term_to_name %>% filter(GO_ID!="GO:0008150")
+
           enr <- enricher(gene = dat,
                           pvalueCutoff = 1,
                           pAdjustMethod = "none",

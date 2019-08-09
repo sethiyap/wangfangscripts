@@ -1,9 +1,11 @@
 
 #--- orgDB folder ----
-dir="/Users/Pooja/Documents/Data-Analysis/PhD/Scripts-commands/orgDb/org.Scerevisiae.S288c.v42.eg.db_2019.03.tar.gz"
+dir="/Users/Pooja/Documents/Data-Analysis/PhD/Scripts-commands/orgDb/org.Anidulans.FGSC.A4.v42.eg.db_2019.03.tar.gz"
 #--- Install packages for OrgDB ----
 install.packages(pkgs = dir ,repos = NULL, type = "source")
 #---
+# --- run as
+plot_cnet_from_local_orgdb(dat, no_GO_Terms = 20,output_name="xxx")
 
 
 dat <- clipr::read_clip()

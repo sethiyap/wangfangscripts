@@ -1,4 +1,20 @@
 
+#Figure 2
+
+
+packrat::off()
+#--- packages
+library(ComplexHeatmap)
+library(EnrichedHeatmap)
+library(rtracklayer)
+library(circlize)
+library(rbamtools)
+library(rtracklayer)
+library(GenomicFeatures)
+library(tidyverse)
+library(extrafont)
+loadfonts(device = "pdf")
+
 gff_file <- "/Users/Pooja/Documents/Data-Analysis/Others/Reference_Annotation/An/A_nidulans_FGSC_A4_version_s10-m04-r07_features.gff"
 
 mylist <- read_delim(pipe("pbpaste"), delim="\t", col_names=FALSE)
@@ -46,7 +62,7 @@ xx <- bw_files %>%
 eml_1 <- EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[1]]+0.01),
                                 name = xx$names[[1]],
                                 column_title = xx$names[[1]],
-                                row_order = order(mylist$X2, decreasing = TRUE),
+                             #   row_order = order(mylist$X2, decreasing = TRUE),
                          cluster_rows = FALSE,
                          show_row_names = FALSE,
                          axis_name_rot = 90,
@@ -56,7 +72,7 @@ eml_1 <- EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[1]]+0.01),
                          axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
                          col = colorRamp2(breaks = c(0,4,6,8,10),
                                           colors = c("white","#fef0d9","#ef6548","#d7301f","#990000")),
-                         top_annotation = HeatmapAnnotation(lines = anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
+                         top_annotation = HeatmapAnnotation(lines = EnrichedHeatmap::anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
                                                                                   ylim = c(2.8,5.5),height = unit(2, "cm")
                                                                                  ))
                          )
@@ -68,14 +84,14 @@ eml_1 <- EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[1]]+0.01),
 eml_2 <-  EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[2]]+0.01),
                                            name = xx$names[[2]],
                                            column_title = xx$names[[2]],
-                                                   cluster_rows = FALSE,
+                                                   cluster_rows = TRUE,
                                                    show_row_names = FALSE,
                                                    axis_name_rot = 90,
                                                    heatmap_legend_param = list(color_bar = "continuous",legend_direction="horizontal", legend_width = unit(3, "cm"),
                                                                                title_position = "topcenter",labels_gp = gpar(fonsize=12, fontfamily="Arial")),
                                                    axis_name = c("-1kb","TSS", "+1kb"),
                                                    axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
-                                           col = colorRamp2(breaks = c(0,1,2,3,4),
+                                           col = colorRamp2(breaks = c(0,2,3,4,5),
                                                                  colors = c("white","#b2e2e2","#99d8c9","#66c2a4", "#005824")),
                                          top_annotation = HeatmapAnnotation(lines = anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
                                                                                            ylim = c(2.8,5.5),height = unit(2, "cm")
@@ -94,7 +110,7 @@ eml_3 <- EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[3]]+0.01),
                                                    axis_name = c("-1kb","TSS", "+1kb"),
                                                    axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
                                          col = colorRamp2(breaks = c(1,2,3,4,5),
-                                                          colors = c("white","#d0d1e6","#a6bddb","#0570b0","#034e7b")),
+                                                         colors = c("white","#d0d1e6","#a6bddb","#0570b0","#034e7b")),
                                          top_annotation = HeatmapAnnotation(lines = anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
                                                                                                   ylim = c(2.8,5.5),height = unit(2, "cm")
                                                                                              ))
@@ -107,4 +123,82 @@ print("plotting....")
 pdf(file=paste("FIG2_B3", length(genes_1), "hm.pdf", sep="_"), width=3, height=10)
 draw(eml_3, heatmap_legend_side = "top", gap = unit(2, "mm"))
 dev.off()
+
+
+
+#--- some additional plots to check active transcription in spore at 6d and 17d
+eml_1 <- EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[2]]+0.01),
+                                          name = xx$names[[2]],
+                                          column_title = xx$names[[2]],
+                                          row_order = order(mylist$X2, decreasing = TRUE),
+                                          cluster_rows = FALSE,
+                                          show_row_names = FALSE,
+                                          axis_name_rot = 90,
+                                          heatmap_legend_param = list(color_bar = "continuous",legend_direction="horizontal", legend_width = unit(3, "cm"),
+                                                                      title_position = "topcenter",labels_gp = gpar(fonsize=12, fontfamily="Arial")),
+                                          axis_name = c("-1kb","TSS", "+1kb"),
+                                          axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
+                                          col = colorRamp2(breaks = c(0,4,6,8,10),
+                                                           colors = c("white","#fef0d9","#ef6548","#d7301f","#990000")
+                                                          #colors=c("#ffffb2","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#b10026")
+                                                          ),
+                                          top_annotation = HeatmapAnnotation(lines = EnrichedHeatmap::anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
+                                                                                                                    ylim = c(2.8,5.5),height = unit(2, "cm")
+                                          ))
+)
+
+
+eml_2 <-  EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[1]]+0.01),
+                                           name = xx$names[[1]],
+                                           column_title = xx$names[[1]],
+                                           #row_order = order(mylist$X2, decreasing = TRUE),
+                                           cluster_rows = FALSE,
+                                           show_row_names = FALSE,
+                                           axis_name_rot = 90,
+                                           heatmap_legend_param = list(color_bar = "continuous",legend_direction="horizontal", legend_width = unit(3, "cm"),
+                                                                       title_position = "topcenter",labels_gp = gpar(fonsize=12, fontfamily="Arial")),
+                                           axis_name = c("-1kb","TSS", "+1kb"),
+                                           axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
+                                           col = colorRamp2(breaks = c(2,3,4,4.5,5),colors = c("white","#fef0d9","#ef6548","#d7301f","#990000")),
+                                           top_annotation = HeatmapAnnotation(lines = anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
+                                                                                                    ylim = c(2.8,3.8),height = unit(2, "cm")
+                                           ))
+)
+
+
+eml_3 <- EnrichedHeatmap::EnrichedHeatmap(log2(xx$norm_matrix[[3]]+0.01),
+                                          name = xx$names[[3]],
+                                          column_title = xx$names[[3]],
+                                          #row_order = order(mylist$X2, decreasing = TRUE),
+                                          cluster_rows = FALSE,
+                                          show_row_names = FALSE,
+                                          axis_name_rot = 90,
+                                          heatmap_legend_param = list(color_bar = "continuous",legend_direction="horizontal", legend_width = unit(3, "cm"),
+                                                                      title_position = "topcenter",labels_gp = gpar(fonsize=12, fontfamily="Arial")),
+                                          axis_name = c("-1kb","TSS", "+1kb"),
+                                          axis_name_gp = gpar(fonsize=12, fontfamily="Arial"),
+                                          col = colorRamp2(breaks = c(2,3,4,4.5,5),
+                                                           # colors = c("white","#d0d1e6","#a6bddb","#0570b0","#034e7b")
+                                                           colors = c("white","#fef0d9","#ef6548","#d7301f","#990000")),
+                                          top_annotation = HeatmapAnnotation(lines = anno_enriched(axis_param =list( facing="inside",side="left",gp=gpar(fonsize=12, fontfamily="Arial")),
+                                                                                                   ylim = c(2.8,4.2),height = unit(2, "cm")
+                                          ))
+)
+
+eml_list <- eml_1+eml_3+eml_2
+
+
+
+
+print("plotting....")
+pdf(file=paste("spore_3d_6d_17d", length(genes_1), "hm.pdf", sep="_"), width=7, height=10)
+draw(eml_list, heatmap_legend_side = "top", gap = unit(2, "mm"))
+dev.off()
+
+
+
+
+
+
+
 
